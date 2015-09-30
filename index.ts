@@ -2,6 +2,8 @@
 /// <reference path="src/MainState.ts" />
 /// <reference path="src/Player.ts" />
 /// <reference path="src/Utils.ts" />
+/// <reference path="src/Enemy.ts" />
+/// <reference path="src/Bullet.ts" />
 
 document.addEventListener('DOMContentLoaded', function onReady() {
     let game = new Kiwi.Game();
