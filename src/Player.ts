@@ -4,7 +4,9 @@ module Game {
         rightKey: Kiwi.Input.Key;
         shootKey: Kiwi.Input.Key;
         finger: Kiwi.Input.Finger;
+        speedX: number;
         lastShoot: number;
+        shootDelay: number;
         constructor(state: Kiwi.State, x: number, y: number) {
             super(state, state.textures.player, x, y);
             this.leftKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.A);
@@ -13,6 +15,8 @@ module Game {
             this.finger = this.game.input.touch.latestFinger;
 
             this.lastShoot = Date.now();
+            this.speedX = 70;
+            this.shootDelay = 150;
         }
 
         update() {
@@ -22,13 +26,13 @@ module Game {
         controls() {
             if((this.leftKey.isDown || (this.finger.point.x < this.x && this.finger.active))
                 && this.x > 0 - this.state.textures.player.width / 2) {
-                this.x -= 10;
+                this.x -= this.speedX * this.game.time.delta() / 100;
             } else if((this.rightKey.isDown || (this.finger.point.x > this.x && this.finger.active)) &&
                 this.x < this.game.stage.width - this.state.textures.player.width / 2) {
-                this.x += 10;
+                this.x += this.speedX * this.game.time.delta() / 100;
             }
 
-            if((this.shootKey.isDown || this.finger.active) && (Date.now() - this.lastShoot > 500)) {
+            if((this.shootKey.isDown || this.finger.active) && (Date.now() - this.lastShoot > this.shootDelay)) {
                 this.lastShoot = Date.now();
                 this.shootLaser();
             }
