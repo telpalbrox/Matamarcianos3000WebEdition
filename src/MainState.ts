@@ -9,8 +9,9 @@ module Game {
 
         preload() {
             this.addImage('player', 'assets/images/ship.png');
-            this.addImage('enemy', 'assets/images/enemyBlack1.png');
+            this.addImage('enemyBlack', 'assets/images/enemyBlack1.png');
             this.addImage('bullet', 'assets/images/laser.png');
+            this.addImage('enemyBlue', 'assets/images/enemyBlue2.png');
         }
 
         create() {
@@ -18,7 +19,7 @@ module Game {
             this.player = new Player(this, this.game.stage.width / 2 - this.textures.player.width / 2, this.game.stage.height - 100);
 
             this.addChild(this.player);
-            this.addChild(new Enemy(this, 0, 150));
+            this.addChild(new EnemyBlack(this, 0, 150));
         }
 
         update() {
@@ -53,8 +54,15 @@ module Game {
         }
 
         spawnEnemy() {
-            let x = this.randomData.integerInRange(0 + this.textures.enemy.width, this.game.stage.width - this.textures.enemy.width);
-            let newEnemy = new Enemy(this, x, -100);
+            let newEnemy: Enemy;
+            let number = this.randomData.integerInRange(0, 2);
+            if(number === 0) {
+                let x = this.randomData.integerInRange(0 + this.textures.enemyBlack.width, this.game.stage.width - this.textures.enemyBlack.width);
+                newEnemy = new EnemyBlack(this, x, -100);
+            } else {
+                let x = this.randomData.integerInRange(0 + this.textures.enemyBlue.width, this.game.stage.width - this.textures.enemyBlue.width);
+                newEnemy = new EnemyBlue(this, x, -100);
+            }
             let enemies = <Enemy[]>this.getChildrenByTag('enemy');
             for(let enemy of enemies) {
                 if(newEnemy.physics.overlaps(enemy)) {

@@ -3,6 +3,8 @@
 /// <reference path="src/Player.ts" />
 /// <reference path="src/Utils.ts" />
 /// <reference path="src/Enemy.ts" />
+/// <reference path="src/EnemyBlack.ts" />
+/// <reference path="src/EnemyBlue.ts" />
 /// <reference path="src/Bullet.ts" />
 /// <reference path="src/HealthComponent.ts" />
 

@@ -1,12 +1,12 @@
 module Game {
     export class Enemy extends Kiwi.GameObjects.Sprite {
         physics: Kiwi.Components.ArcadePhysics;
-        constructor(state: Kiwi.State, x: number, y: number) {
-            super(state, state.textures.enemy, x, y);
-            this.components.add(new HealthComponent(this, 1));
+        constructor(state: Kiwi.State, texture: Kiwi.Textures.TextureAtlas, health: number, coords: Kiwi.Geom.Point, velocity: Kiwi.Geom.Point) {
+            super(state, texture, coords.x, coords.y);
+            this.components.add(new HealthComponent(this, health));
 
             this.physics = this.components.add(new Kiwi.Components.ArcadePhysics(this, this.box));
-            this.physics.velocity = new Kiwi.Geom.Point(0, 19);
+            this.physics.velocity = velocity;
 
             this.addTag('enemy');
         }
