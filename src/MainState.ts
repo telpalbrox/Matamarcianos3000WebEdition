@@ -1,6 +1,7 @@
 module Game {
     export class MainState extends Kiwi.State {
         player: Player;
+        randomData: Kiwi.Utils.RandomDataGenerator;
 
         constructor() {
             super('mainState');
@@ -13,6 +14,7 @@ module Game {
         }
 
         create() {
+            this.randomData = new Kiwi.Utils.RandomDataGenerator();
             this.player = new Player(this, this.game.stage.width / 2 - this.textures.player.width / 2, this.game.stage.height - 100);
 
             this.addChild(this.player);
@@ -21,11 +23,16 @@ module Game {
 
         update() {
             super.update();
-            this.collisions();
             this.game.stage.setRGBColor(0, 0, 0);
+            this.randomSpawn();
+            this.collisions();
         }
 
         collisions() {
+            this.playerBulletsEnemiesCollisions();
+        }
+
+        playerBulletsEnemiesCollisions() {
             let enemies = <Enemy[]>this.getChildrenByTag('enemy');
             let bullets = <Bullet[]>this.getChildrenByTag('bullet');
             for(let enemy of enemies) {
@@ -36,6 +43,25 @@ module Game {
                     }
                 }
             }
+        }
+
+        randomSpawn() {
+            let number = this.randomData.integerInRange(0, 100);
+            if(number === 0) {
+                this.spawnEnemy();
+            }
+        }
+
+        spawnEnemy() {
+            let x = this.randomData.integerInRange(0 + this.textures.enemy.width, this.game.stage.width - this.textures.enemy.width);
+            let newEnemy = new Enemy(this, x, -100);
+            let enemies = <Enemy[]>this.getChildrenByTag('enemy');
+            for(let enemy of enemies) {
+                if(newEnemy.physics.overlaps(enemy)) {
+                    return;
+                }
+            }
+            this.addChild(newEnemy);
         }
     }
 }
